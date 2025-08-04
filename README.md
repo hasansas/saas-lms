@@ -63,8 +63,6 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 - **Pre-test / Post-test** optional per **course or program**  
 - **Completion triggers** when all lessons completed  
 
----
-
 ### 2.4 Tests & Assessments
 
 - **Multi-section tests** with MCQ and Essay support  
@@ -107,8 +105,6 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
   - **WhatsApp / Telegram message** (if connected)  
   - **Optional iCal calendar file**  
 
----
-
 ## 3️⃣ Core Application Flows
 
 ### 3.1 Student Learning Flow
@@ -125,3 +121,117 @@ F --> G[Update Lesson Progress]
 G --> H{Last Lesson Completed?}
 H -->|Yes| I[Mark Course Completed]
 H -->|No| B
+```
+
+### 3.2 Staff Course & Program Management Flow
+
+```mermaid
+flowchart LR
+A[Staff Login] --> B[Create Program or Course]
+B --> C[Add Modules & Lessons]
+C --> D[Configure Pre-test/Post-test]
+D --> E[Assign Course/Program to Branch]
+E --> F[Monitor Student Progress & Reports]
+```
+
+### 3.3 Program Purchase & Class Auto-Assignment Flow
+
+```mermaid
+flowchart LR
+A[Student Buys/Subscribes Program] --> B[Process Payment]
+B --> C{Payment Success?}
+C -->|No| D[Order Pending/Retry]
+C -->|Yes| E[Check Program Pre-test Requirement]
+
+E -->|No| F[Direct Class Assignment to Default/Next Available Class]
+E -->|Yes| G[Student Takes Pre-test]
+G --> H[Calculate Score & Determine Level]
+
+H --> I{Class Available & Not Full?}
+I -->|Yes| J[Assign Student to Class]
+I -->|No| K[Create New Class & Assign Student]
+
+J --> L[Enrollment Success]
+K --> L[Enrollment Success]
+
+L --> M[Fetch Class Schedule & Delivery Info]
+M --> N[Send Multi-Channel Notifications]
+```
+
+### 3.4 Class Notification Flow (Programs with Classes Only)
+
+```mermaid
+flowchart LR
+A[Enrollment Success] --> B[Fetch Class Schedule]
+B --> C{Class Mode?}
+C -->|Physical| D[Include Location & Room]
+C -->|Online| E[Include Zoom/Meet URL]
+
+D --> F[Send Notifications]
+E --> F[Send Notifications]
+
+F --> G[Email with Class Details]
+F --> H[WhatsApp / Telegram Message]
+F --> I[Optional iCal Calendar Event]
+```
+
+---
+
+## 4️⃣ User Roles & Permissions
+
+| Type          | Scope           | Example Permissions                  |
+|---------------|-----------------|--------------------------------------|
+| Admin         | Global SaaS     | Manage tenants, billing, reports     |
+| Tenant Staff  | Tenant / Branch | Manage courses, classes, students    |
+| Student       | Branch / Tenant | Access courses, take tests           |
+
+**RBAC Highlights:**
+
+- **Tenant-level and branch-level** permissions  
+- **Sample keys**:  
+  - `manage_courses`  
+  - `manage_classes`  
+  - `assign_students`  
+  - `view_reports`  
+
+---
+
+## 5️⃣ Multi-Tenant Architecture
+
+1. **Tenant Isolation** with `tenant_id` on most tables  
+2. **Branch-Level Scoping** for courses, students, and reporting  
+3. **Dynamic Class Assignment** handled per tenant/program  
+4. **Payment Isolation** per tenant for SaaS billing  
+
+---
+
+## 6️⃣ Technical Notes
+
+- **Backend:** Node.js (NestJS / Express) or Laravel  
+- **Frontend:** Nuxt 3 / React  
+- **Database:** PostgreSQL (multi-tenant, class assignment logic in services)  
+- **Authentication:** JWT + Refresh Token  
+- **Media Storage:** S3 / GCS for video & PDFs  
+- **Job Queue:** BullMQ / RabbitMQ for notifications & async tasks  
+- **CDN:** For media delivery  
+
+**Notification System:**
+
+- **Email**: SES / SendGrid / Postmark  
+- **WhatsApp**: Twilio / WhatsApp Cloud API  
+- **Telegram**: Telegram Bot API  
+- **Optional iCal generation** for class events  
+
+---
+
+## 7️⃣ Future Enhancements
+
+- **Gamification** (points, badges)  
+- **AI-powered recommendations** for class placement and learning paths  
+- **Integrated Chat** (student-student, student-instructor)  
+- **Zoom / Video Conferencing Integration** for live classes  
+- **White-label SaaS** per tenant with custom domain & branding  
+- **Mobile app support** for offline learning  
+- **Automated Class Reminders** and QR-based check-ins for physical classes  
+- **Certificate generation** after course completion  
+
