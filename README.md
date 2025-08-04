@@ -105,6 +105,59 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
   - **WhatsApp / Telegram message** (if connected)  
   - **Optional iCal calendar file**  
 
+## 4️⃣ User Roles & Permissions
+
+| Type          | Scope           | Example Permissions                  |
+|---------------|-----------------|--------------------------------------|
+| Admin         | Global SaaS     | Manage tenants, billing, reports     |
+| Tenant Staff  | Tenant / Branch | Manage courses, classes, students    |
+| Student       | Branch / Tenant | Access courses, take tests           |
+
+**RBAC Highlights:**
+
+- **Tenant-level and branch-level** permissions  
+- **Sample keys**:  
+  - `manage_courses`  
+  - `manage_classes`  
+  - `assign_students`  
+  - `view_reports`  
+
+---
+
+## 5️⃣ Multi-Tenant Architecture
+
+1. **Tenant Isolation** with `tenant_id` on most tables  
+2. **Branch-Level Scoping** for courses, students, and reporting  
+3. **Dynamic Class Assignment** handled per tenant/program  
+4. **Payment Isolation** per tenant for SaaS billing  
+
+---
+
+## 7️⃣ Future Enhancements
+
+- **Certificate generation** after course completion  
+- **AI-powered recommendations** for class placement and learning paths  
+- **Gamification** (points, badges)  
+- **Integrated Chat** (student-student, student-instructor)  
+- **Zoom / Video Conferencing Integration** for live classes  
+- **White-label SaaS** per tenant with custom domain & branding  
+- **Mobile app support** for offline learning  
+
+### Automated Reminders & Smart Scheduling
+
+- **Automated Reminders**  
+  - Send class reminders **1 day** and **1 hour before class**  
+- **Push Notifications**  
+  - Via mobile app for schedules, updates, and reminders  
+- **Student Self-Reschedule**  
+  - Allow students to **move to another class** if slots are available  
+- **Dynamic QR Check-In**  
+  - For **physical classes** to verify attendance  
+- **Recording Links for Online Classes**  
+  - Provide access to recordings **after session ends**  
+
+---
+
 ## 3️⃣ Core Application Flows
 
 ### 3.1 Student Learning Flow
@@ -175,74 +228,57 @@ F --> H[WhatsApp / Telegram Message]
 F --> I[Optional iCal Calendar Event]
 ```
 
+### 3.5 Student Flow: Program Without Class
+
+```mermaid
+flowchart LR
+A[Student Buys/Subscribes Program] --> B[Process Payment]
+B --> C{Payment Success?}
+C -->|No| D[Order Pending/Retry]
+C -->|Yes| E[Grant Program Access Immediately]
+E --> F[Student Can Access Courses]
+F --> G[Student Starts Course]
+G --> H[Follow Student Learning Flow]
+```
+
+**Flow Notes:**
+
+- No class assignment is needed.  
+- Student can start the course immediately after payment.  
+- Progress tracking and lesson access follow the **Student Learning Flow**.
+
+### 3.6 Student Flow: Program With Class
+
+```mermaid
+flowchart LR
+A[Student Buys/Subscribes Program] --> B[Process Payment]
+B --> C{Payment Success?}
+C -->|No| D[Order Pending/Retry]
+C -->|Yes| E[Check Program Pre-Test Requirement]
+
+E -->|No| F[Auto-Class Assignment]
+E -->|Yes| G[Student Takes Pre-Test]
+G --> H[Determine Class Level & Assign]
+
+H --> I[Check Class Capacity]
+I -->|Full| J[Create New Class & Assign Student]
+I -->|Available| K[Assign to Existing Class]
+
+J --> L[Enrollment Success]
+K --> L[Enrollment Success]
+
+L --> M[Send Multi-Channel Notifications]
+M --> N[Student Waits Until Class Start]
+N --> O[Student Attends First Class]
+O --> P[Student Starts Course]
+P --> Q[Follow Student Learning Flow]
+```
+
+**Flow Notes:**
+
+- Student cannot start learning until class assignment & schedule notification.
+- If pre-test is required, class level is determined by score thresholds.
+- Notifications include date, time, location/Zoom link.
+- After class start, the Student Learning Flow applies.
+
 ---
-
-## 4️⃣ User Roles & Permissions
-
-| Type          | Scope           | Example Permissions                  |
-|---------------|-----------------|--------------------------------------|
-| Admin         | Global SaaS     | Manage tenants, billing, reports     |
-| Tenant Staff  | Tenant / Branch | Manage courses, classes, students    |
-| Student       | Branch / Tenant | Access courses, take tests           |
-
-**RBAC Highlights:**
-
-- **Tenant-level and branch-level** permissions  
-- **Sample keys**:  
-  - `manage_courses`  
-  - `manage_classes`  
-  - `assign_students`  
-  - `view_reports`  
-
----
-
-## 5️⃣ Multi-Tenant Architecture
-
-1. **Tenant Isolation** with `tenant_id` on most tables  
-2. **Branch-Level Scoping** for courses, students, and reporting  
-3. **Dynamic Class Assignment** handled per tenant/program  
-4. **Payment Isolation** per tenant for SaaS billing  
-
----
-
-## 6️⃣ Technical Notes
-
-- **Backend:** Node.js (NestJS / Express) or Laravel  
-- **Frontend:** Nuxt 3 / React  
-- **Database:** PostgreSQL (multi-tenant, class assignment logic in services)  
-- **Authentication:** JWT + Refresh Token  
-- **Media Storage:** S3 / GCS for video & PDFs  
-- **Job Queue:** BullMQ / RabbitMQ for notifications & async tasks  
-- **CDN:** For media delivery  
-
-**Notification System:**
-
-- **Email**: SES / SendGrid / Postmark  
-- **WhatsApp**: Twilio / WhatsApp Cloud API  
-- **Telegram**: Telegram Bot API  
-- **Optional iCal generation** for class events  
-
----
-
-## 7️⃣ Future Enhancements
-
-- **Certificate generation** after course completion  
-- **AI-powered recommendations** for class placement and learning paths  
-- **Gamification** (points, badges)  
-- **Integrated Chat** (student-student, student-instructor)  
-- **Zoom / Video Conferencing Integration** for live classes  
-- **White-label SaaS** per tenant with custom domain & branding  
-- **Mobile app support** for offline learning  
-
-### Automated Reminders & Smart Scheduling
-
-- **Automated Reminders**  
-  - Send class reminders **1 day** and **1 hour before class**  
-- **Push Notifications**  
-  - Via mobile app for schedules, updates, and reminders  
-- **Student Self-Reschedule**  
-  - Allow students to **move to another class** if slots are available  
-- **Dynamic QR Check-In**  
-  - For **physical classes** to verify attendance  
-- **Recording Links for Online Classes**  
-  - Provide access to recordings **after session ends**  
