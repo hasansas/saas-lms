@@ -1,4 +1,4 @@
-# 📘 SaaS LMS Application Documentation (Full)
+# 📘 SaaS LMS Application Documentation
 
 ---
 
@@ -156,6 +156,11 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 - **Recording Links for Online Classes**  
   - Provide access to recordings **after session ends**  
 
+### Tenant Customization
+
+- **Tenant Theme & Style Customization**  
+  - Tenants can **edit the theme, colors, and landing page style** to match their branding. 
+  
 ---
 
 ## 3️⃣ Core Application Flows
@@ -285,13 +290,13 @@ P --> Q[Follow Student Learning Flow]
 
 ```mermaid
 flowchart TD
-A[Tenant Registers on SaaS LMS] --> B[Admin Approves Tenant (Optional)]
+A[Tenant Registers on SaaS LMS] --> B[Admin Approves Tenant]
 B --> C[Tenant Setup Profile & Branding]
-C --> D[Create Branches (Optional)]
+C --> D[Create Branches]
 D --> E[Invite Staff & Assign Roles]
 E --> F[Create Courses & Modules]
 F --> G[Optionally Create Programs & Classes]
-G --> H[Configure Pre-Test/Post-Test (Optional)]
+G --> H[Configure Pre-Test/Post-Test]
 H --> I[Assign Courses/Programs to Branches]
 I --> J[Set Pricing / Subscription Plans]
 J --> K[Publish Courses/Programs]
