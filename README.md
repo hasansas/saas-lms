@@ -63,14 +63,97 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 - **Pre-test / Post-test** optional per **course or program**  
 - **Completion triggers** when all lessons completed  
 
+---
+
 ### 2.4 Tests & Assessments
 
-- **Multi-section tests** with MCQ and Essay support  
-- **Flexible scoring** (per question, per section, fixed, or custom)  
-- **Pre-test & Post-test** support:
-  - **Pre-test** for **program placement / class auto-assignment**  
-  - **Post-test** for **final evaluation / certification**  
-- **Test attempt tracking**, **auto-grading** for MCQs, and **manual grading** for essays  
+The LMS provides **robust and flexible assessment capabilities** with **multi-section support** for professional exam design.
+
+- **Multi-section tests** with **MCQ, essay, and multimedia questions**  
+- **Flexible scoring options** for quizzes, skill tests, and standardized exams  
+- **Pre-test & Post-test** functionality for **placement** and **final evaluation**  
+- **Test attempt tracking**, **auto-grading** for objective questions, **manual grading** for essays or media responses  
+
+---
+
+#### 🏗️ Test Design Structure
+
+Unlike traditional LMS tests that are **Test → Questions → Answers**,  
+this platform uses a **section-based hierarchy** for better organization:
+
+**Test → Sections → Questions → Answers**
+
+- **Test**  
+  - Core metadata (title, description, type: quiz, placement, evaluation)  
+  - Scoring configuration (fixed, per-question, per-section, or custom logic)  
+
+- **Sections**  
+  - Logical grouping of questions (e.g., **Reading, Writing, Speaking**)  
+  - Can have **individual time limits** and **section scoring rules**  
+  - **Optional instruction text or media** per section  
+
+- **Questions**  
+  - Linked to a section  
+  - Supports **multimedia prompts** (Text, Audio, Video, Image)  
+
+- **Answers (Student Responses)**  
+  - Supports **Text, Audio Recording, Video Recording, Image Upload**  
+  - Can allow **different input types** per question for interactive assessments  
+
+---
+
+#### 🎯 Frontend Display Logic
+
+- **Single-section tests**  
+  - **Frontend may hide the section header** for simplicity  
+  - **Questions can appear directly** for a streamlined quiz experience  
+  - **Optional setting per test**: `showSectionHeader` = true/false  
+
+- **Multi-section tests**  
+  - Display sections clearly with **instructions and progress**  
+  - **Section navigation** (next/prev or auto-advance)  
+  - **Optional per-section timer**  
+
+---
+
+#### ✅ Supported Question & Answer Types
+
+**Question Types (Prompt to Student):**  
+- **Text** → Written instructions or problem statements  
+- **Audio** → Listening comprehension or language prompts  
+- **Video** → Scenario, role-play, or visual demonstration  
+- **Image** → Diagram, chart, or visual identification  
+
+**Answer Types (Student Response):**  
+- **Text** → Short or long answers  
+- **Audio Recording** → Speaking or verbal explanation  
+- **Video Recording** → Presentations, role-plays, or skill demonstrations  
+- **Image Upload** → Handwritten solutions, photo-based tasks  
+
+**Example Interactive Scenarios:**  
+1. **Text Question + Audio Answer** → Oral exams or speaking tests  
+2. **Audio Question + Text Answer** → Listening comprehension  
+3. **Video Question + Video Answer** → Practical or scenario-based assessments  
+4. **Image Question + Audio/Text Answer** → Diagram interpretation  
+
+---
+
+#### 🏆 Flexible Scoring System
+
+Supports multiple scoring methods to match tenant needs:
+
+1. **Fixed Max Score (Quiz Style)**  
+   - e.g., 100 points total regardless of question weights  
+
+2. **Score Per Question (Weighted)**  
+   - e.g., Q1=5 pts, Q2=10 pts, total calculated automatically  
+
+3. **Score Per Section (TOEFL/IELTS Style)**  
+   - e.g., Reading=30 pts, Speaking=30 pts, Writing=40 pts  
+
+4. **Custom Scoring Logic (Advanced)**  
+   - **Formula-based scoring** (weighted averages, penalties)  
+   - **External evaluation API** for AI-assisted scoring  
 
 ---
 
@@ -105,7 +188,105 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
   - **WhatsApp / Telegram message** (if connected)  
   - **Optional iCal calendar file**  
 
-## 4️⃣ User Roles & Permissions
+---
+
+## 3️⃣ SaaS Business Model & Monetization
+
+The LMS operates as a **multi-tenant SaaS platform** with a **dual monetization strategy**:  
+1. **Subscription-Based Pricing** (predictable revenue)  
+2. **Usage-Based Commission** (performance-aligned revenue)
+
+---
+
+### 1️⃣ Subscription-Based Pricing (Baseline Revenue)
+
+- **Tiered subscription plans** remain the core model for predictable MRR (Monthly Recurring Revenue).  
+- Tiers can be defined by:
+  - **Number of active students or staff users**  
+  - **Storage allocation** for video, PDFs, and test data  
+  - **Feature access** (advanced analytics, integrations, white-labeling)  
+
+**Example Tiers:**
+
+| Tier          | Monthly Price | Key Features                                        |
+|---------------|--------------|----------------------------------------------------|
+| **Free/Trial**| $0           | Limited courses, 1 branch, branding by SaaS         |
+| **Basic**     | $49          | X active students, email notifications, basic reports |
+| **Pro**       | $199         | Advanced analytics, WhatsApp/Telegram, moderate storage |
+| **Enterprise**| Custom       | Unlimited students, white-label, custom domain, priority support |
+
+---
+
+### 2️⃣ Usage-Based Commission (Growth Revenue)
+
+Beyond the subscription, the platform earns **commission per enrollment** or **per user activity**.  
+
+**Commission Models:**
+
+1. **Percentage per Enrollment**  
+   - e.g., 5-10% of the course/program fee charged to end-users.  
+   - Ideal if tenants sell courses to the public.  
+
+2. **Fixed Fee per Enrollment**  
+   - e.g., $1-$2 per new student enrollment.  
+   - Works well for internal corporate training where prices are fixed.  
+
+3. **Hybrid**  
+   - A **small subscription fee + per-user commission**, ensuring revenue from both low and high-volume tenants.
+
+**Advantages:**  
+- **Aligns revenue with tenant success**: When tenants grow, the SaaS earns more.  
+- **Lowers barrier to entry**: Tenants can start with a lower subscription but share revenue as they scale.  
+- **Supports freemium-to-paid conversion**: Small tenants can start free and pay via commissions.  
+
+---
+
+### 💡 Recommended Implementation Flow
+
+1. **Track Enrollments & Active Users** per tenant in real-time.  
+2. **Generate Automated Usage Reports** for commission calculation.  
+3. **Integrate with Billing System**:
+   - Subscription invoice + commission fees on the same monthly bill.  
+4. **Offer Optional Cap**:
+   - Limit commission per month for high-volume enterprise clients.  
+
+---
+
+### 🏷️ Enterprise & White-Label Upsell
+
+- White-labeling and enterprise support remain **premium features** under **subscription plans**.  
+- Combining subscription + commission ensures **high LTV (Lifetime Value)** from large tenants.  
+
+---
+
+### 📊 Example Revenue Flow
+
+- **Tenant A (Basic Plan)**: $49/month + 50 enrollments × $1/enrollment → **$99/month**  
+- **Tenant B (Pro Plan)**: $199/month + 200 enrollments × $1/enrollment → **$399/month**  
+- **Tenant C (Enterprise)**: $500/month + 500 enrollments × 5% of course price ($20 avg) → **$1,000+/month**
+
+---
+
+## 4️⃣ Core LMS Functionality & Features
+
+### Reporting & Analytics
+
+- **For Instructors/Tenant Admins**:
+  - **Student Performance Analytics**: Show per-student and per-class performance on tests and overall progress.  
+  - **Engagement Metrics**: Track how long students are spending on lessons and which lessons have the highest drop-off rates.  
+  - **Course Effectiveness**: Data on test scores and completion rates to help tenants improve their course content.  
+
+- **For SaaS Global Admin**:
+  - **Tenant Health & Retention Metrics**: Track usage, number of active students per tenant, and subscription renewal rates.  
+
+### E-Commerce Enhancements
+
+- **Bundles & Promotions**: Allow tenants to create course bundles and offer promotional codes or discounts.  
+- **Trial Periods**: Support free trials for courses or programs to drive enrollment.  
+
+---
+
+## 5️⃣ User Roles & Permissions
 
 | Type          | Scope           | Example Permissions                  |
 |---------------|-----------------|--------------------------------------|
@@ -124,7 +305,7 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 
 ---
 
-## 5️⃣ Multi-Tenant Architecture
+## 6️⃣ Multi-Tenant Architecture
 
 1. **Tenant Isolation** with `tenant_id` on most tables  
 2. **Branch-Level Scoping** for courses, students, and reporting  
@@ -139,9 +320,13 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 - **AI-powered recommendations** for class placement and learning paths  
 - **Gamification** (points, badges)  
 - **Integrated Chat** (student-student, student-instructor)  
+  - **In-lesson commenting/questions**: Students can post questions directly on a lesson, and instructors can respond in context.  
+  - **Discussion forums**: Enable asynchronous, community-based discussions within a course or program to foster peer-to-peer learning.  
 - **Zoom / Video Conferencing Integration** for live classes  
 - **White-label SaaS** per tenant with custom domain & branding  
 - **Mobile app support** for offline learning  
+
+---
 
 ### Automated Reminders & Smart Scheduling
 
@@ -159,9 +344,8 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 ### Tenant Customization
 
 - **Tenant Theme & Style Customization**  
-  - Tenants can **edit the theme, colors, and landing page style** to match their branding. 
-  
----
+  - Tenants can **edit the theme, colors, and landing page style** to match their branding.  
+
 
 ## 3️⃣ Core Application Flows
 
