@@ -21,6 +21,14 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 
 ---
 
+## 3️⃣ SaaS Business Model & Monetization
+
+The LMS operates as a **multi-tenant SaaS platform** with a **dual monetization strategy**:  
+1. **Subscription-Based Pricing** (predictable revenue)  
+2. **Usage-Based Commission** (performance-aligned revenue)
+
+---
+
 ## 2️⃣ Feature Modules
 
 ### 2.1 Tenant & Branch Management
@@ -83,9 +91,17 @@ this platform uses a **section-based hierarchy** for better organization:
 
 **Test → Sections → Questions → Answers**
 
-- **Test**  
-  - Core metadata (title, description, type: quiz, placement, evaluation)  
-  - Scoring configuration (fixed, per-question, per-section, or custom logic)  
+- **Test**
+  - Metadata: Title, description, type (quiz, placement, evaluation, etc.)  
+  - **Placement Flexibility**:
+    - **Lesson-Level Test** → Quiz embedded inside a specific lesson  
+    - **Module-Level Test** → Assesses knowledge across a module  
+    - **Course-Level Test** → Full course evaluation or certification  
+    - **Pre-Test** → Used for **placement / auto-class assignment**  
+    - **Post-Test** → Used for **final evaluation / course completion**  
+    - **iQuiz / Inline Quiz** → Lightweight engagement quizzes  
+    - **Standalone Test** → Independent test not linked to any lesson, module, or course  
+  - Scoring configuration (fixed, weighted, per-section, or custom)  
 
 - **Sections**  
   - Logical grouping of questions (e.g., **Reading, Writing, Speaking**)  
@@ -187,14 +203,6 @@ Supports multiple scoring methods to match tenant needs:
   - **Email confirmation** with schedule and location/Zoom link  
   - **WhatsApp / Telegram message** (if connected)  
   - **Optional iCal calendar file**  
-
----
-
-## 3️⃣ SaaS Business Model & Monetization
-
-The LMS operates as a **multi-tenant SaaS platform** with a **dual monetization strategy**:  
-1. **Subscription-Based Pricing** (predictable revenue)  
-2. **Usage-Based Commission** (performance-aligned revenue)
 
 ---
 
