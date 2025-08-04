@@ -226,12 +226,23 @@ F --> I[Optional iCal Calendar Event]
 
 ## 7️⃣ Future Enhancements
 
-- **Gamification** (points, badges)  
+- **Certificate generation** after course completion  
 - **AI-powered recommendations** for class placement and learning paths  
+- **Gamification** (points, badges)  
 - **Integrated Chat** (student-student, student-instructor)  
 - **Zoom / Video Conferencing Integration** for live classes  
 - **White-label SaaS** per tenant with custom domain & branding  
 - **Mobile app support** for offline learning  
-- **Automated Class Reminders** and QR-based check-ins for physical classes  
-- **Certificate generation** after course completion  
 
+### Automated Reminders & Smart Scheduling
+
+- **Automated Reminders**  
+  - Send class reminders **1 day** and **1 hour before class**  
+- **Push Notifications**  
+  - Via mobile app for schedules, updates, and reminders  
+- **Student Self-Reschedule**  
+  - Allow students to **move to another class** if slots are available  
+- **Dynamic QR Check-In**  
+  - For **physical classes** to verify attendance  
+- **Recording Links for Online Classes**  
+  - Provide access to recordings **after session ends**  
