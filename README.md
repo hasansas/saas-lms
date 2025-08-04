@@ -163,7 +163,7 @@ The **SaaS LMS** is a **multi-tenant, multi-branch learning management system** 
 ### 3.1 Student Learning Flow
 
 ```mermaid
-flowchart LR
+flowchart TD
 A[Student Login] --> B[View Enrolled Courses/Programs]
 B --> C[Start Lesson]
 C --> D{Lesson Type?}
@@ -179,7 +179,7 @@ H -->|No| B
 ### 3.2 Staff Course & Program Management Flow
 
 ```mermaid
-flowchart LR
+flowchart TD
 A[Staff Login] --> B[Create Program or Course]
 B --> C[Add Modules & Lessons]
 C --> D[Configure Pre-test/Post-test]
@@ -190,7 +190,7 @@ E --> F[Monitor Student Progress & Reports]
 ### 3.3 Program Purchase & Class Auto-Assignment Flow
 
 ```mermaid
-flowchart LR
+flowchart TD
 A[Student Buys/Subscribes Program] --> B[Process Payment]
 B --> C{Payment Success?}
 C -->|No| D[Order Pending/Retry]
@@ -214,7 +214,7 @@ M --> N[Send Multi-Channel Notifications]
 ### 3.4 Class Notification Flow (Programs with Classes Only)
 
 ```mermaid
-flowchart LR
+flowchart TD
 A[Enrollment Success] --> B[Fetch Class Schedule]
 B --> C{Class Mode?}
 C -->|Physical| D[Include Location & Room]
@@ -231,7 +231,7 @@ F --> I[Optional iCal Calendar Event]
 ### 3.5 Student Flow: Program Without Class
 
 ```mermaid
-flowchart LR
+flowchart TD
 A[Student Buys/Subscribes Program] --> B[Process Payment]
 B --> C{Payment Success?}
 C -->|No| D[Order Pending/Retry]
@@ -250,7 +250,7 @@ G --> H[Follow Student Learning Flow]
 ### 3.6 Student Flow: Program With Class
 
 ```mermaid
-flowchart LR
+flowchart TD
 A[Student Buys/Subscribes Program] --> B[Process Payment]
 B --> C{Payment Success?}
 C -->|No| D[Order Pending/Retry]
@@ -281,4 +281,29 @@ P --> Q[Follow Student Learning Flow]
 - Notifications include date, time, location/Zoom link.
 - After class start, the Student Learning Flow applies.
 
----
+### 3.7 Tenant Flow: From Registration to Selling Courses/Classes
+
+```mermaid
+flowchart TD
+A[Tenant Registers on SaaS LMS] --> B[Admin Approves Tenant (Optional)]
+B --> C[Tenant Setup Profile & Branding]
+C --> D[Create Branches (Optional)]
+D --> E[Invite Staff & Assign Roles]
+E --> F[Create Courses & Modules]
+F --> G[Optionally Create Programs & Classes]
+G --> H[Configure Pre-Test/Post-Test (Optional)]
+H --> I[Assign Courses/Programs to Branches]
+I --> J[Set Pricing / Subscription Plans]
+J --> K[Publish Courses/Programs]
+
+K --> L[Students Buy/Subscribe]
+L --> M{Program Has Class?}
+
+M -->|No| N[Student Starts Course Immediately]
+N --> O[Follow Student Learning Flow]
+
+M -->|Yes| P[Student Assigned to Class]
+P --> Q[Student Receives Schedule & Notifications]
+Q --> R[Class Starts or Student Joins First Session]
+R --> S[Follow Student Learning Flow]
+```
